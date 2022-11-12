@@ -23,7 +23,7 @@ public class Account {
     @Column(name = "ACCOUNT_TYPE")
     private AccountType accountType;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Column(name = "CUSTOMER_ID")
     private Customer customerId;
 
