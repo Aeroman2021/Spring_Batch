@@ -1,23 +1,23 @@
 package com.example.spring_batch.config;
 
-import com.example.spring_batch.model.Customer;
+import com.example.spring_batch.model.BankCustomer;
 import org.springframework.batch.item.ItemProcessor;
 
-public class CustomerProcessor implements ItemProcessor<Customer,Customer> {
+public class CustomerProcessor implements ItemProcessor<BankCustomer, BankCustomer> {
 
     @Override
-    public Customer process(Customer customer) throws Exception {
+    public BankCustomer process(BankCustomer customer) throws Exception {
         if(nationalIdIsValid(customer) && dobIsValid(customer))
             return customer;
         else
             return null;
     }
 
-    private boolean nationalIdIsValid(Customer customer){
+    private boolean nationalIdIsValid(BankCustomer customer){
         return customer.getNationalId().length() == 10;
     }
 
-    private boolean dobIsValid(Customer customer){
+    private boolean dobIsValid(BankCustomer customer){
         String dob = customer.getDob();
         String year = dob.substring(6);
         int yob = Integer.parseInt(year);
