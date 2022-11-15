@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "account_info")
+@Table(name = "BANK_ACCOUNT")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account {
+public class BankAccount {
 
     @Id
     @Column(name = "ACCOUNT_ID")
@@ -20,20 +20,20 @@ public class Account {
     @Column(name = "NUMBER")
     private String number;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "ACCOUNT_TYPE")
     private AccountType accountType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "CUSTOMER_ID")
-    private Customer customerId;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private BankCustomer customer;
 
-    @Column(name = "LIMIT")
+    @Column(name = "ACCOUNT_LIMIT")
     private Long limit;
 
-    @Column(name = "OPEN_DATE")
+    @Column(name = "ACCOUNT_OPEN_DATE")
     private String openDate;
 
-    @Column(name = "BALANCE")
+    @Column(name = "ACCOUNT_BALANCE")
     private Long balance;
 
 }
