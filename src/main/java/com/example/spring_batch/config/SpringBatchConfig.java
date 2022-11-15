@@ -1,7 +1,7 @@
 package com.example.spring_batch.config;
 
-import com.example.spring_batch.model.Account;
-import com.example.spring_batch.model.Customer;
+import com.example.spring_batch.model.BankAccount;
+import com.example.spring_batch.model.BankCustomer;
 import com.example.spring_batch.repository.AccountRepository;
 import com.example.spring_batch.repository.CustomerRepository;
 import lombok.AllArgsConstructor;
@@ -34,8 +34,8 @@ public class SpringBatchConfig {
 
 
     @Bean
-    public FlatFileItemReader<Customer> customerReader(){
-        FlatFileItemReader<Customer> itemReader = new FlatFileItemReader<>();
+    public FlatFileItemReader<BankCustomer> customerReader(){
+        FlatFileItemReader<BankCustomer> itemReader = new FlatFileItemReader<>();
         itemReader.setResource(new FileSystemResource("src/main/resources/cust.csv"));
         itemReader.setName("csv-customer-reader");
         itemReader.setLinesToSkip(1);
@@ -44,8 +44,8 @@ public class SpringBatchConfig {
     }
 
     @Bean
-    public FlatFileItemReader<Account> accountReader(){
-        FlatFileItemReader<Account> itemReader = new FlatFileItemReader<>();
+    public FlatFileItemReader<BankAccount> accountReader(){
+        FlatFileItemReader<BankAccount> itemReader = new FlatFileItemReader<>();
         itemReader.setResource(new FileSystemResource("src/main/resources/account.csv"));
         itemReader.setName("csv-account-reader");
         itemReader.setLinesToSkip(1);
@@ -53,30 +53,30 @@ public class SpringBatchConfig {
         return itemReader;
     }
 
-    private LineMapper<Customer> customerLineMapper() {
-        DefaultLineMapper<Customer> lineMapper = new DefaultLineMapper<>();
+    private LineMapper<BankCustomer> customerLineMapper() {
+        DefaultLineMapper<BankCustomer> lineMapper = new DefaultLineMapper<>();
         DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setDelimiter(",");
         lineTokenizer.setStrict(false);
         lineTokenizer.setNames("customerId","name","surName","address","zipCode","nationalId","dob");
 
-        BeanWrapperFieldSetMapper<Customer> customerFieldSetMapper = new BeanWrapperFieldSetMapper<>();
-        customerFieldSetMapper.setTargetType(Customer.class);
+        BeanWrapperFieldSetMapper<BankCustomer> customerFieldSetMapper = new BeanWrapperFieldSetMapper<>();
+        customerFieldSetMapper.setTargetType(BankCustomer.class);
 
         lineMapper.setLineTokenizer(lineTokenizer);
         lineMapper.setFieldSetMapper(customerFieldSetMapper);
         return lineMapper;
     }
 
-    private LineMapper<Account> accountLineMapper() {
-        DefaultLineMapper<Account> lineMapper = new DefaultLineMapper<>();
+    private LineMapper<BankAccount> accountLineMapper() {
+        DefaultLineMapper<BankAccount> lineMapper = new DefaultLineMapper<>();
         DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setDelimiter(",");
         lineTokenizer.setStrict(false);
         lineTokenizer.setNames("accountId","number","surName","accountType","customerId","limit","openDate","balance");
 
-        BeanWrapperFieldSetMapper<Account> accountFieldSetMapper = new BeanWrapperFieldSetMapper<>();
-        accountFieldSetMapper.setTargetType(Account.class);
+        BeanWrapperFieldSetMapper<BankAccount> accountFieldSetMapper = new BeanWrapperFieldSetMapper<>();
+        accountFieldSetMapper.setTargetType(BankAccount.class);
 
         lineMapper.setLineTokenizer(lineTokenizer);
         lineMapper.setFieldSetMapper(accountFieldSetMapper);
@@ -94,16 +94,16 @@ public class SpringBatchConfig {
     }
 
     @Bean
-    public RepositoryItemWriter<Customer> customerWriter(){
-         RepositoryItemWriter<Customer> writer = new RepositoryItemWriter<>();
+    public RepositoryItemWriter<BankCustomer> customerWriter(){
+         RepositoryItemWriter<BankCustomer> writer = new RepositoryItemWriter<>();
          writer.setRepository(customerRepository);
          writer.setMethodName("save");
          return writer;
     }
 
     @Bean
-    public RepositoryItemWriter<Account> accountWriter(){
-        RepositoryItemWriter<Account> writer = new RepositoryItemWriter<>();
+    public RepositoryItemWriter<BankAccount> accountWriter(){
+        RepositoryItemWriter<BankAccount> writer = new RepositoryItemWriter<>();
         writer.setRepository(accountRepository);
         writer.setMethodName("save");
         return writer;
@@ -111,7 +111,7 @@ public class SpringBatchConfig {
 
     @Bean
     public Step step1(){
-        return stepBuilderFactory.get("customer-csv-step").<Customer,Customer>chunk(10)
+        return stepBuilderFactory.get("customer-csv-step").<BankCustomer, BankCustomer>chunk(10)
                 .reader(customerReader())
                 .processor(customerProcessor())
                 .writer(customerWriter())
@@ -121,7 +121,7 @@ public class SpringBatchConfig {
 
     @Bean
     public Step step2(){
-        return stepBuilderFactory.get("account-csv-step").<Account,Account>chunk(10)
+        return stepBuilderFactory.get("account-csv-step").<BankAccount, BankAccount>chunk(10)
                 .reader(accountReader())
                 .processor(accountProcessor())
                 .writer(accountWriter())
