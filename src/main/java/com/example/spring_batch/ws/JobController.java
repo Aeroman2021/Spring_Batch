@@ -22,7 +22,7 @@ public class JobController {
     private Job job;
 
 
-    @PostMapping("/importCustomers")
+    @PostMapping("/importData")
     public void importCSVToDataBase(){
         JobParameters jobParameter = new JobParametersBuilder()
                 .addLong("start at",System.currentTimeMillis())
