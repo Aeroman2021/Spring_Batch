@@ -1,4 +1,4 @@
-account_id,number,account_type,customer_id,limit,open_date,balance
+accountId,accountNumber,accountType,customerId,accountLimit,accountOpenDate,accountBalance
 1,123456789,RECURRING_DEPOSIT,1,40000,12/11/2022,45000
 2,123456788,SAVING,1,40000,12/11/2022,40000
 3,123456789,RECURRING_DEPOSIT,2,40000,5/11/2022,50000
