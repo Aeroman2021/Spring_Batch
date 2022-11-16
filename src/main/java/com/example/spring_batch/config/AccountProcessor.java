@@ -1,18 +1,16 @@
 package com.example.spring_batch.config;
 
-import com.example.spring_batch.model.Account;
+import com.example.spring_batch.model.BankAccount;
 import com.example.spring_batch.model.AccountType;
 import org.springframework.batch.item.ItemProcessor;
-
-import java.util.function.Predicate;
 
 import static com.example.spring_batch.model.AccountType.RECURRING_DEPOSIT;
 import static com.example.spring_batch.model.AccountType.SAVINGS;
 
-public class AccountProcessor implements ItemProcessor<Account, Account> {
+public class AccountProcessor implements ItemProcessor<BankAccount, BankAccount> {
 
     @Override
-    public Account process(Account account) throws Exception {
+    public BankAccount process(BankAccount account) throws Exception {
         if(accountTypeIsValid(account) &&
              accountNumberIsValid(account) &&
               balanceIsValid(account) &&
@@ -22,22 +20,22 @@ public class AccountProcessor implements ItemProcessor<Account, Account> {
             return null;
     }
 
-    private boolean accountTypeIsValid(Account account){
+    private boolean accountTypeIsValid(BankAccount account){
         AccountType accountType = account.getAccountType();
         return (accountType == SAVINGS ||
                 accountType == RECURRING_DEPOSIT ||
                 accountType == RECURRING_DEPOSIT);
     }
 
-    private boolean balanceIsValid(Account acc) {
-        return acc.getBalance() > acc.getLimit();
+    private boolean balanceIsValid(BankAccount acc) {
+        return acc.getAccountCurrentBalance() > acc.getAccountLimit();
     }
 
-    private boolean accountIsNotNull(Account account){
+    private boolean accountIsNotNull(BankAccount account){
         return account != null;
     }
-    private boolean accountNumberIsValid(Account account){
-        String number = account.getNumber();
+    private boolean accountNumberIsValid(BankAccount account){
+        String number = account.getAccountNumber();
         return (number.startsWith("0") &&
                 number.length()==10);
     }
