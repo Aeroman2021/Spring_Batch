@@ -25,9 +25,9 @@ public class BankCustomer {
     @Column(name = "CUSTOMER_SURNAME")
     private String customerSurname;
 
-    @OneToMany
-    @JoinColumn(name = "CUSTOMER_ID")
-    private List<BankAccount> accountList;
+//    @OneToMany
+//    @JoinColumn(name = "CUSTOMER_ID")
+//    private List<BankAccount> accountList;
 
     @Column(name = "CUSTOMER_ADDRESS")
     private String customerAddress;

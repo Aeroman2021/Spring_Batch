@@ -25,6 +25,9 @@ public class BankAccount {
     @Column(name = "ACCOUNT_TYPE")
     private AccountType accountType;
 
+    @ManyToOne
+    @JoinColumn(name ="CUSTOMER_ID" )
+    private BankCustomer customerId;
 
     @Column(name = "ACCOUNT_LIMIT")
     private long accountLimit;
