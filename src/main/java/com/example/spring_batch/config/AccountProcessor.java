@@ -4,7 +4,8 @@ import com.example.spring_batch.model.BankAccount;
 import com.example.spring_batch.model.AccountType;
 import org.springframework.batch.item.ItemProcessor;
 
-import static com.example.spring_batch.model.AccountType.*;
+import static com.example.spring_batch.model.AccountType.RECURRING_DEPOSIT;
+import static com.example.spring_batch.model.AccountType.SAVINGS;
 
 public class AccountProcessor implements ItemProcessor<BankAccount, BankAccount> {
 
@@ -23,19 +24,18 @@ public class AccountProcessor implements ItemProcessor<BankAccount, BankAccount>
         AccountType accountType = account.getAccountType();
         return (accountType == SAVINGS ||
                 accountType == RECURRING_DEPOSIT ||
-                accountType == FIXED_DEPOSIT);
+                accountType == RECURRING_DEPOSIT);
     }
 
     private boolean balanceIsValid(BankAccount acc) {
-        return acc.getBalance() > acc.getLimit();
+        return acc.getAccountCurrentBalance() > acc.getAccountLimit();
     }
 
     private boolean accountIsNotNull(BankAccount account){
         return account != null;
     }
-
     private boolean accountNumberIsValid(BankAccount account){
-        String number = account.getNumber();
+        String number = account.getAccountNumber();
         return (number.startsWith("0") &&
                 number.length()==10);
     }

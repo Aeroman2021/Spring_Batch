@@ -7,33 +7,32 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "BANK_ACCOUNT")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+    @Table(name = "BANK_ACCOUNT")
 public class BankAccount {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ACCOUNT_ID")
     private int accountId;
 
-    @Column(name = "NUMBER")
-    private String number;
+    @Column(name = "ACCOUNT_NUMBER")
+    private String accountNumber;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ACCOUNT_TYPE")
     private AccountType accountType;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private BankCustomer customer;
 
     @Column(name = "ACCOUNT_LIMIT")
-    private Long limit;
+    private long accountLimit;
 
     @Column(name = "ACCOUNT_OPEN_DATE")
-    private String openDate;
+    private String accountOpenDate;
 
     @Column(name = "ACCOUNT_BALANCE")
-    private Long balance;
+    private Long accountCurrentBalance;
 
 }

@@ -58,7 +58,8 @@ public class SpringBatchConfig {
         DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setDelimiter(",");
         lineTokenizer.setStrict(false);
-        lineTokenizer.setNames("customerId","name","surName","address","zipCode","nationalId","dob");
+        lineTokenizer.setNames("customerId","customerName","customerSurname","customerAddress",
+                "customerZipCode","customerNationalId","customerDob");
 
         BeanWrapperFieldSetMapper<BankCustomer> customerFieldSetMapper = new BeanWrapperFieldSetMapper<>();
         customerFieldSetMapper.setTargetType(BankCustomer.class);
@@ -73,7 +74,8 @@ public class SpringBatchConfig {
         DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setDelimiter(",");
         lineTokenizer.setStrict(false);
-        lineTokenizer.setNames("accountId","number","surName","accountType","customerId","limit","openDate","balance");
+        lineTokenizer.setNames("accountId","accountNumber","accountType","customerId",
+                "accountLimit","accountOpenDate","accountCurrentBalance");
 
         BeanWrapperFieldSetMapper<BankAccount> accountFieldSetMapper = new BeanWrapperFieldSetMapper<>();
         accountFieldSetMapper.setTargetType(BankAccount.class);

@@ -14,11 +14,11 @@ public class CustomerProcessor implements ItemProcessor<BankCustomer, BankCustom
     }
 
     private boolean nationalIdIsValid(BankCustomer customer){
-        return customer.getNationalId().length() == 10;
+        return customer.getCustomerNationalId().length() == 10;
     }
 
     private boolean dobIsValid(BankCustomer customer){
-        String dob = customer.getDob();
+        String dob = customer.getCustomerDob();
         String year = dob.substring(6);
         int yob = Integer.parseInt(year);
         return yob > 1995;

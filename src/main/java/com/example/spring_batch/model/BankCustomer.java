@@ -5,41 +5,40 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "BANK_CUSTOMER")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "BANK_CUSTOMER")
 public class BankCustomer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CUSTOMER_ID")
     private int customerId;
 
     @Column(name = "CUSTOMER_NAME")
-    private String firstName;
+    private String customerName;
 
     @Column(name = "CUSTOMER_SURNAME")
-    private String lastName;
+    private String customerSurname;
 
-    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true )
-    @JoinColumn(name ="ACCOUNT_CUSTOMER_ID")
-    private List<BankAccount> accounts = new ArrayList<>();
+    @OneToMany
+    @JoinColumn(name = "CUSTOMER_ID")
+    private List<BankAccount> accountList;
 
     @Column(name = "CUSTOMER_ADDRESS")
-    private String address;
+    private String customerAddress;
 
     @Column(name = "CUSTOMER_ZIP_CODE")
-    private String zipCode;
+    private String customerZipCode;
 
     @Column(name = "CUSTOMER_NATIONAL_ID")
-    private String nationalId;
+    private String customerNationalId;
 
-    @Column(name = "CUSTOMER_DOB")
-    private String dob;
-
+    @Column(name = "CUSTOMER_BIRTH_DATE")
+    private String customerDob;
 
 }
