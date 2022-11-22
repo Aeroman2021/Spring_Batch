@@ -3,13 +3,15 @@ package com.example.spring_batch.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 
 @Entity
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Data
     @Table(name = "BANK_ACCOUNT")
 public class BankAccount {
 
@@ -37,5 +39,6 @@ public class BankAccount {
 
     @Column(name = "ACCOUNT_BALANCE")
     private Long accountCurrentBalance;
+
 
 }
