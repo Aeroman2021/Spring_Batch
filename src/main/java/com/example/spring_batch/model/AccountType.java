@@ -1,8 +1,4 @@
 package com.example.spring_batch.model;
-
-import javafx.scene.layout.Priority;
-
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 public enum AccountType {
