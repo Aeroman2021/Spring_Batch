@@ -11,13 +11,11 @@ public class AccountProcessor implements ItemProcessor<BankAccount, BankAccount>
     @Override
     public BankAccount process(BankAccount account) throws Exception {
         if(accountTypeIsValid(account) &&
-             accountNumberIsValid(account) &&
-              balanceIsValid(account) &&
+                accountNumberIsValid(account) &&
+                balanceIsValid(account) &&
                 accountIsNotNull(account)) {
-            System.out.println("data valid");
             return account;
         }else {
-            System.out.println("data is invalid");
             return null;
         }
     }
@@ -30,7 +28,7 @@ public class AccountProcessor implements ItemProcessor<BankAccount, BankAccount>
     }
 
     private boolean balanceIsValid(BankAccount acc) {
-        return acc.getAccountCurrentBalance() > acc.getAccountLimit();
+        return acc.getAccountCurrentBalance() <= acc.getAccountLimit();
     }
 
     private boolean accountIsNotNull(BankAccount account){
@@ -38,8 +36,8 @@ public class AccountProcessor implements ItemProcessor<BankAccount, BankAccount>
     }
     private boolean accountNumberIsValid(BankAccount account){
         String number = account.getAccountNumber();
-        return (number.startsWith("1") &&
-                number.length()==9);
+        return (number.startsWith("0") &&
+                number.length()==22);
     }
 
 
