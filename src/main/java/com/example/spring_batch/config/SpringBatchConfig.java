@@ -1,6 +1,7 @@
 package com.example.spring_batch.config;
 
 import com.example.spring_batch.model.BankAccount;
+import com.example.spring_batch.model.BankAccountFieldSetMapper;
 import com.example.spring_batch.model.BankCustomer;
 import com.example.spring_batch.repository.AccountRepository;
 import com.example.spring_batch.repository.CustomerRepository;
@@ -16,6 +17,7 @@ import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
@@ -32,6 +34,8 @@ public class SpringBatchConfig {
     private CustomerRepository customerRepository;
     private AccountRepository accountRepository;
 
+
+    private BankAccountFieldSetMapper accountFieldSetMapper;
 
     @Bean
     public FlatFileItemReader<BankCustomer> customerReader(){
@@ -77,8 +81,8 @@ public class SpringBatchConfig {
         lineTokenizer.setNames("accountId","accountNumber","accountType","customerId",
                 "accountLimit","accountOpenDate","accountCurrentBalance");
 
-        BeanWrapperFieldSetMapper<BankAccount> accountFieldSetMapper = new BeanWrapperFieldSetMapper<>();
-        accountFieldSetMapper.setTargetType(BankAccount.class);
+//        BeanWrapperFieldSetMapper<BankAccount> accountFieldSetMapper = new BeanWrapperFieldSetMapper<>();
+//        accountFieldSetMapper.setTargetType(BankAccount.class);
 
         lineMapper.setLineTokenizer(lineTokenizer);
         lineMapper.setFieldSetMapper(accountFieldSetMapper);
@@ -113,7 +117,7 @@ public class SpringBatchConfig {
 
     @Bean
     public Step step1(){
-        return stepBuilderFactory.get("customer-csv-step").<BankCustomer, BankCustomer>chunk(10)
+        return stepBuilderFactory.get("customer-csv-step").<BankCustomer, BankCustomer>chunk(5)
                 .reader(customerReader())
                 .processor(customerProcessor())
                 .writer(customerWriter())
@@ -123,7 +127,7 @@ public class SpringBatchConfig {
 
     @Bean
     public Step step2(){
-        return stepBuilderFactory.get("account-csv-step").<BankAccount, BankAccount>chunk(10)
+        return stepBuilderFactory.get("account-csv-step").<BankAccount, BankAccount>chunk(5)
                 .reader(accountReader())
                 .processor(accountProcessor())
                 .writer(accountWriter())
