@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 
+import java.util.Optional;
+
 @Component
 public class BankAccountFieldSetMapper implements FieldSetMapper<BankAccount> {
 
@@ -17,7 +19,9 @@ public class BankAccountFieldSetMapper implements FieldSetMapper<BankAccount> {
 
     @Override
     public BankAccount mapFieldSet(FieldSet fieldSet) throws BindException {
-        return new BankAccount(fieldSet.readInt("accountId"),
+        Optional<BankCustomer> foundCustomer = customerRepository.findById(fieldSet.readInt("customerId"));
+        if(foundCustomer.isPresent()){
+            return new BankAccount(fieldSet.readInt("accountId"),
                 fieldSet.readString("accountNumber"),
                 AccountType.of(fieldSet.readString("accountType")),
                 customerRepository.findById(fieldSet.readInt("customerId")).get(),
@@ -25,7 +29,8 @@ public class BankAccountFieldSetMapper implements FieldSetMapper<BankAccount> {
                 fieldSet.readString("accountOpenDate"),
                 fieldSet.readLong("accountCurrentBalance"));
 
-
+        }else
+            return null;
     }
 
 
