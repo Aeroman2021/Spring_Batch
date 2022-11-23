@@ -17,15 +17,10 @@ public class BankAccountFieldSetMapper implements FieldSetMapper<BankAccount> {
 
     @Override
     public BankAccount mapFieldSet(FieldSet fieldSet) throws BindException {
-        BankCustomer customer = customerRepository.findById(fieldSet.readInt("customerId")).get();
-        if(customer == null)
-            return null;
-
-
         return new BankAccount(fieldSet.readInt("accountId"),
                 fieldSet.readString("accountNumber"),
                 AccountType.of(fieldSet.readString("accountType")),
-                customer,
+                customerRepository.findById(fieldSet.readInt("customerId")).get(),
                 fieldSet.readLong("accountLimit"),
                 fieldSet.readString("accountOpenDate"),
                 fieldSet.readLong("accountCurrentBalance"));

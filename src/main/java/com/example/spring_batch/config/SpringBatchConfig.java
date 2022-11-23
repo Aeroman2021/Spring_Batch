@@ -81,9 +81,6 @@ public class SpringBatchConfig {
         lineTokenizer.setNames("accountId","accountNumber","accountType","customerId",
                 "accountLimit","accountOpenDate","accountCurrentBalance");
 
-//        BeanWrapperFieldSetMapper<BankAccount> accountFieldSetMapper = new BeanWrapperFieldSetMapper<>();
-//        accountFieldSetMapper.setTargetType(BankAccount.class);
-
         lineMapper.setLineTokenizer(lineTokenizer);
         lineMapper.setFieldSetMapper(accountFieldSetMapper);
         return lineMapper;
