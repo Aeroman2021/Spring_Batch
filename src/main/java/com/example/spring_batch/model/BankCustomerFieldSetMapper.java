@@ -2,8 +2,10 @@ package com.example.spring_batch.model;
 
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.FieldSet;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 
+@Component
 public class BankCustomerFieldSetMapper implements FieldSetMapper<BankCustomer> {
     @Override
     public BankCustomer mapFieldSet(FieldSet fieldSet) throws BindException {
