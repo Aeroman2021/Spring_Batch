@@ -21,7 +21,7 @@ public class CustomerProcessor implements ItemProcessor<BankCustomer, BankCustom
         String dob = customer.getCustomerDob();
         String year = dob.substring(6);
         int yob = Integer.parseInt(year);
-        return yob < 1995;
+        return yob > 1995;
     }
 
 
