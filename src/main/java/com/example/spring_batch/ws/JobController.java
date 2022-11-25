@@ -8,6 +8,7 @@ import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,7 @@ public class JobController {
     @Autowired
     private Job job;
 
-
+    @Scheduled(fixedRate = 4000)
     @PostMapping("/importData")
     public void importCSVToDataBase(){
         JobParameters jobParameter = new JobParametersBuilder()
@@ -34,11 +35,5 @@ public class JobController {
             e.printStackTrace();
         }
     }
-
-
-
-
-
-
 
 }
