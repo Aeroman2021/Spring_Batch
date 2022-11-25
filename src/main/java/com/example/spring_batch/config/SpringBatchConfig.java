@@ -9,6 +9,8 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.batch.item.file.FlatFileItemReader;
@@ -28,6 +30,9 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 
 import javax.sql.DataSource;
+import java.awt.print.Book;
+import java.io.File;
+import java.io.IOException;
 
 @Configuration
 @EnableBatchProcessing
@@ -43,8 +48,7 @@ public class SpringBatchConfig {
 
     private BankCustomerFieldSetMapper bankCustomerFieldSetMapper;
 
-    @Autowired
-    private DataSource dataSource;
+
 
     @Bean
     public FlatFileItemReader<BankCustomer> customerReader(){
@@ -110,6 +114,15 @@ public class SpringBatchConfig {
     }
 
     @Bean
+    public JsonFileItemWriter<BankAccount> jsonFileItemWriter() {
+        return new JsonFileItemWriterBuilder<BankAccount>()
+                .jsonObjectMarshaller(new JacksonJsonObjectMarshaller<>())
+                .resource(new ClassPathResource("account.json"))
+                .name("accountJsonFileItemWriter")
+                .build();
+    }
+
+    @Bean
     public RepositoryItemWriter<BankAccount> accountWriter(){
         RepositoryItemWriter<BankAccount> writer = new RepositoryItemWriter<>();
         writer.setRepository(accountRepository);
@@ -118,24 +131,24 @@ public class SpringBatchConfig {
     }
 
 
-    @Bean
-    public JdbcCursorItemReader<BankAccount> dbReader(){
-        JdbcCursorItemReader<BankAccount> cursorItemReader = new JdbcCursorItemReader<>();
-        cursorItemReader.setDataSource(dataSource);
-        cursorItemReader.setSql("SELECT ACCOUNT_ID,ACCOUNT_NUMBER,ACCOUNT_TYPE,CUSTOMER_ID,ACCOUNT_LIMIT,ACCOUNT_OPEN_DATE," +
-                "ACCOUNT_BALANCE FROM BANK_ACCOUNT");
-        cursorItemReader.setRowMapper(new BankAccountRowMapper());
-        return cursorItemReader;
-    }
+//    @Bean
+//    public JdbcCursorItemReader<BankAccount> dbReader(){
+//        JdbcCursorItemReader<BankAccount> cursorItemReader = new JdbcCursorItemReader<>();
+//        cursorItemReader.setDataSource(dataSource);
+//        cursorItemReader.setSql("SELECT ACCOUNT_ID,ACCOUNT_NUMBER,ACCOUNT_TYPE,CUSTOMER_ID,ACCOUNT_LIMIT,ACCOUNT_OPEN_DATE," +
+//                "ACCOUNT_BALANCE FROM BANK_ACCOUNT");
+//        cursorItemReader.setRowMapper(new BankAccountRowMapper());
+//        return cursorItemReader;
+//    }
 
-    @Bean
-    public JsonFileItemWriter<BankAccount> jsonFileItemWriter() {
-        return new JsonFileItemWriterBuilder<BankAccount>()
-                .jsonObjectMarshaller(new JacksonJsonObjectMarshaller<>())
-                .resource(new ClassPathResource("account.json"))
-                .name("accountsJsonFileItemWriter")
-                .build();
-    }
+//    @Bean
+//    public JsonFileItemWriter<BankAccount> jsonFileItemWriter() {
+//        return new JsonFileItemWriterBuilder<BankAccount>()
+//                .jsonObjectMarshaller(new JacksonJsonObjectMarshaller<>())
+//                .resource(new ClassPathResource("account.json"))
+//                .name("accountsJsonFileItemWriter")
+//                .build();
+//    }
 
 
 
@@ -162,15 +175,12 @@ public class SpringBatchConfig {
     @Bean
     public Step step3(){
         return stepBuilderFactory.get("account-json").<BankAccount, BankAccount>chunk(2)
-                .reader(dbReader())
+                .reader(accountReader())
+//                .processor(accountProcessor())
                 .writer(jsonFileItemWriter())
                 .taskExecutor(taskExecutor())
                 .build();
     }
-
-
-
-
 
 
     @Bean
@@ -178,7 +188,7 @@ public class SpringBatchConfig {
         return jobBuilderFactory.get("import-customers-and-accounts")
                 .flow(step1())
                 .next(step2())
-                .next(step3())
+//                .next(step3())
                 .end()
                 .build();
     }
